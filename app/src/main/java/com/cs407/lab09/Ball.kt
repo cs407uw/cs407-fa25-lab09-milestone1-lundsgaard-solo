@@ -40,24 +40,25 @@ class Ball(
             accY = yAcc
             return
         }
-        checkBoundaries()
+
         Log.d("helloworld", "x: " + posX.toString() + ", y: " + posY.toString() )
+        Log.d("helloworld", "vel x: " + velocityX.toString() + ", vel y: " + velocityY.toString() )
+
 
 
         val oldAccX = accX
         val oldAccY = accY
-
-        accX += ((xAcc - accX)) * (dT) * 50
-        accY += ((yAcc - accY)) * (dT) * 50
+        accX = xAcc
+        accY = yAcc
         val oldVelocityX = velocityX
         val oldVelocityY = velocityY
-        velocityX += (oldAccX * dT)
-        velocityY += (oldAccY * dT)
-
-        posX += (oldVelocityX * dT)
-        posY += (oldVelocityY * dT)
+        velocityX += (0.5f * (oldAccX + accX) * dT)
+        velocityY += (0.5f * (oldAccY + accY) * dT)
 
 
+        posX = (oldVelocityX * dT) + ((1/6) * dT * dT * ((3 * oldAccX) + accX))
+        posY = (oldVelocityY * dT) + ((1/6) * dT * dT * ((3 * oldAccY) + accY))
+        checkBoundaries()
     }
 
     /**
@@ -100,6 +101,5 @@ class Ball(
         accX = 0f
         accY = 0f
         isFirstUpdate = true
-
     }
 }
