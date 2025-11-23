@@ -24,7 +24,7 @@ class Ball(
 
     private var isFirstUpdate = true
 
-
+    var i = 0
     init {
         reset()
     }
@@ -41,10 +41,14 @@ class Ball(
             return
         }
 
-        Log.d("helloworld", "x: " + posX.toString() + ", y: " + posY.toString() )
-        Log.d("helloworld", "vel x: " + velocityX.toString() + ", vel y: " + velocityY.toString() )
-
-
+        if(i % 100 == 0) {
+            Log.d("helloworld", "x: " + posX.toString() + ", y: " + posY.toString())
+            Log.d(
+                "helloworld",
+                "vel x: " + velocityX.toString() + ", vel y: " + velocityY.toString()
+            )
+        }
+        val step = dT * 10
 
         val oldAccX = accX
         val oldAccY = accY
@@ -52,13 +56,14 @@ class Ball(
         accY = yAcc
         val oldVelocityX = velocityX
         val oldVelocityY = velocityY
-        velocityX += (0.5f * (oldAccX + accX) * dT)
-        velocityY += (0.5f * (oldAccY + accY) * dT)
+        velocityX += (0.5f * (oldAccX + accX) * step)
+        velocityY += (0.5f * (oldAccY + accY) * step)
 
 
-        posX = (oldVelocityX * dT) + ((1/6) * dT * dT * ((3 * oldAccX) + accX))
-        posY = (oldVelocityY * dT) + ((1/6) * dT * dT * ((3 * oldAccY) + accY))
+        posX += (oldVelocityX * step) + ((1f/6f) * step * step * ((3 * oldAccX) + accX))
+        posY += (oldVelocityY * step) + ((1f/6f) * step * step * ((3 * oldAccY) + accY))
         checkBoundaries()
+        i++
     }
 
     /**
@@ -92,8 +97,7 @@ class Ball(
      * velocity and acceleration.
      */
     fun reset() {
-        // TODO: implement the reset function
-        // (Reset posX, posY, velocityX, velocityY, accX, accY, isFirstUpdate)
+
         posX = backgroundWidth / 2
         posY = backgroundHeight / 2
         velocityX = 0f
